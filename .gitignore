@@ -1,0 +1,5 @@
+# Generated stats card (published to GitHub Pages, not committed)
+assets/
+
+__pycache__/
+.ruff_cache/

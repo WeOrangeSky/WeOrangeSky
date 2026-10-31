@@ -1,0 +1,112 @@
+name: Update stats card
+
+on:
+  schedule:
+    - cron: "0 16 * * 0" # Sundays 16:00 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - templates/stats-card.svg
+      - scripts/**
+      - tests/**
+      - pyproject.toml
+      - .github/workflows/stats-card.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - templates/stats-card.svg
+      - scripts/**
+      - tests/**
+      - pyproject.toml
+      - .github/workflows/stats-card.yml
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Lint
+        run: |
+          python -m pip install --disable-pip-version-check ruff==0.17.3
+          ruff check .
+          ruff format --check .
+
+      - name: Run tests
+        run: python -m unittest -v
+
+  build:
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Generate stats card
+        id: generate
+        env:
+          STATS_TOKEN: ${{ secrets.STATS_TOKEN }}
+          GH_USERNAME: ${{ github.repository_owner }}
+          # Highest values seen so far; the card never shows less than these.
+          PEAK_TOTAL_PRS: ${{ vars.PEAK_TOTAL_PRS }}
+          PEAK_MERGED_PRS: ${{ vars.PEAK_MERGED_PRS }}
+          PEAK_TOTAL_COMMITS: ${{ vars.PEAK_TOTAL_COMMITS }}
+          PEAK_TOTAL_CONTRIBUTIONS: ${{ vars.PEAK_TOTAL_CONTRIBUTIONS }}
+        run: python scripts/generate_stats_card.py
+
+      - name: Save peak stats
+        if: steps.generate.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.STATS_TOKEN }}
+          REPO: ${{ github.repository }}
+          PEAK_TOTAL_PRS: ${{ steps.generate.outputs.PEAK_TOTAL_PRS }}
+          PEAK_MERGED_PRS: ${{ steps.generate.outputs.PEAK_MERGED_PRS }}
+          PEAK_TOTAL_COMMITS: ${{ steps.generate.outputs.PEAK_TOTAL_COMMITS }}
+          PEAK_TOTAL_CONTRIBUTIONS: ${{ steps.generate.outputs.PEAK_TOTAL_CONTRIBUTIONS }}
+        run: |
+          for name in PEAK_TOTAL_PRS PEAK_MERGED_PRS PEAK_TOTAL_COMMITS PEAK_TOTAL_CONTRIBUTIONS; do
+            gh variable set "$name" --repo "$REPO" --body "${!name}"
+          done
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: assets
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

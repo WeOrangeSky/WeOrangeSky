@@ -19,11 +19,21 @@ I'm a **Systems & DevOps Engineer** with **9+ years of experience** in the IT in
 
 - **Event Forecasting Platform — *DevOps Engineer***
   - Supporting and developing a scalable forecasting solution providing weekly product shipment predictions across global markets.
-  - **Key Stack:** Azure (Data Factory, Databricks, Key Vault, Function Apps, Web Apps, Container Registries, VNETs, Managed Identities), GitHub Actions, Docker, Jenkins, Python (PySpark, Django), Java Spring Boot, PostgreSQL, OracleDB, Linux, Nginx.
+  - **Key Stack:** Azure (Data Factory, Databricks, Key Vault, Function Apps, Web Apps, Container Registries, VNETs, Managed Identities, AppRegistrations, EntraID, Storage Accounts), GitHub Actions, Docker, Jenkins, Python (PySpark, Django), Java Spring Boot, PostgreSQL, OracleDB, Linux, Nginx.
 
 - **Analyte Profiler MVP — *DevOps Engineer***
   - Designed and implemented cloud infrastructure and CI/CD pipelines for an MVP post-discovery phase across multi-cloud environments.
-  - **Key Stack:** Terraform (IaC), AWS (ECS, ECR, RDS PostgreSQL, Lambda, S3, Route53, ALB, VPC, IAM, Cognito, EventBridge, Secrets Manager, CloudWatch), Azure (Entra ID, Key Vault, Event Hub, Function App), GitHub Actions, GitLab, Docker, OIDC, Python, Bash.
+  - **Key Stack:** Terraform (IaC), AWS (ECS, ECR, RDS PostgreSQL, Lambda, S3, Route53, ALB, VPC, IAM, Cognito, EventBridge, Secrets Manager, CloudWatch), Azure (Entra ID, Key Vault, Event Hub, Function App, Managed Identities, App Registrations, Storage Accounts - Queue), GitHub Actions, GitLab, Docker, OIDC, Python, Bash.
+
+---
+
+## 📊 GitHub Stats
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://weorangesky.github.io/WeOrangeSky/stats-card-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://weorangesky.github.io/WeOrangeSky/stats-card-light.svg">
+  <img alt="GitHub Stats" src="https://weorangesky.github.io/WeOrangeSky/stats-card-light.svg">
+</picture>
 
 ---
 
