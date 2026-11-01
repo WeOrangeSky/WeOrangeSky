@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="350" height="175" viewBox="0 0 350 175" fill="none" role="img" aria-labelledby="titleId descId">
+  <title id="titleId">{{TITLE}}</title>
+  <desc id="descId">Total PRs: {{TOTAL_PRS}}, Total Commits: {{TOTAL_COMMITS}}, Merged PRs: {{MERGED_PRS_PERCENT}}, Total Contributions: {{TOTAL_CONTRIBUTIONS}}</desc>
+  <style>
+    .header { font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif; fill: {{TITLE_COLOR}}; animation: fadeInAnimation 0.8s ease-in-out forwards; }
+    .stat   { font: 600 14px 'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif; fill: {{TEXT_COLOR}}; }
+    .bold   { font-weight: 700; }
+    .stagger { opacity: 0; animation: fadeInAnimation 0.3s ease-in-out forwards; }
+    @keyframes fadeInAnimation { from { opacity: 0; } to { opacity: 1; } }
+    @media (prefers-reduced-motion) { * { animation-duration: 0s !important; animation-delay: 0s !important; } }
+  </style>
+
+  <rect x="0.5" y="0.5" rx="4.5" width="349" height="174" fill="{{BG_COLOR}}" stroke="{{BORDER_COLOR}}" stroke-opacity="1"/>
+
+  <g transform="translate(25, 35)">
+    <text x="0" y="0" class="header">{{TITLE}}</text>
+  </g>
+
+  <g transform="translate(25, 55)">
+    <g class="stagger" style="animation-delay: 450ms" transform="translate(0, 0)">
+      <text class="stat bold" y="12.5">Total PRs:</text>
+      <text class="stat bold" x="220" y="12.5">{{TOTAL_PRS}}</text>
+    </g>
+    <g class="stagger" style="animation-delay: 600ms" transform="translate(0, 25)">
+      <text class="stat bold" y="12.5">Total Commits:</text>
+      <text class="stat bold" x="220" y="12.5">{{TOTAL_COMMITS}}</text>
+    </g>
+    <g class="stagger" style="animation-delay: 750ms" transform="translate(0, 50)">
+      <text class="stat bold" y="12.5">Merged PRs Percentage:</text>
+      <text class="stat bold" x="220" y="12.5">{{MERGED_PRS_PERCENT}}</text>
+    </g>
+    <g class="stagger" style="animation-delay: 900ms" transform="translate(0, 75)">
+      <text class="stat bold" y="12.5">Total Contributions:</text>
+      <text class="stat bold" x="220" y="12.5">{{TOTAL_CONTRIBUTIONS}}</text>
+    </g>
+  </g>
+</svg>
+
